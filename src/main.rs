@@ -21,6 +21,7 @@ fn main() {
             .material(
                 MaterialBuilder::default()
                     .shader_name("points".to_string())
+                    .texture_name(Some("default".to_string()))
                     .build()
                     .unwrap(),
             )
@@ -38,7 +39,13 @@ fn main() {
     game.add_render_item(
         RenderItemBuilder::default()
             .vertices(gen_sphere())
-            .material(MaterialBuilder::default().build().unwrap())
+            .material(
+                MaterialBuilder::default()
+                    .shader_name("texture".to_string())
+                    .texture_name(Some("default".to_string()))
+                    .build()
+                    .unwrap(),
+            )
             .instance_transforms(vec![
                 TransformBuilder::default()
                     .pos((0f32, 3f32, 0f32))
@@ -68,6 +75,10 @@ fn main() {
     }
 
     loop {
+        // screenshot
+        if game.input.keys_pressed.contains(&Key::P) {
+            game.renderer.save_screenshot();
+        }
         // run the engine update
         game.update(|_: &Ui| {});
 
