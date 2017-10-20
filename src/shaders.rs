@@ -4,25 +4,51 @@ use caper::game::Game;
 pub fn add_custom_shaders(game: &mut Game) {
     let shaders = &mut game.renderer.shaders;
     let display = &game.renderer.display;
+
     let _ = shaders.add_shader(
         display,
         "points",
         default::gl330::VERT,
         texture::gl330::FRAG,
         points::GEOM,
-        default::gl330::TESS_CONTROL,
+        points::TESS_CONTROL,
         default::gl330::TESS_EVAL,
     );
 }
 
 
 mod points {
+    /// tessellation control shader
+    pub const TESS_CONTROL: &'static str = "
+        #version 400
+
+        layout(vertices = 3) out;
+
+        in vec3 v_normal[];
+        in vec2 v_texture[];
+
+        out vec3 tc_normal[];
+        out vec2 tc_texture[];
+
+        const float tess_level = 5.0;
+
+        void main() {
+            tc_normal[gl_InvocationID] = v_normal[gl_InvocationID];
+            tc_texture[gl_InvocationID] = v_texture[gl_InvocationID];
+            gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+
+            gl_TessLevelOuter[0] = tess_level;
+            gl_TessLevelOuter[1] = tess_level;
+            gl_TessLevelOuter[2] = tess_level;
+            gl_TessLevelInner[0] = tess_level;
+        }
+    ";
     // geometry shader
     pub const GEOM: &'static str = "
         #version 330
 
         uniform vec2 viewport;
-        const float SIZE = 0.3;
+        const float SIZE = 0.1;
 
         layout(triangles) in;
         layout(triangle_strip, max_vertices=24) out;
