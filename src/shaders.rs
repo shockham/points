@@ -30,17 +30,18 @@ mod points {
         out vec3 tc_normal[];
         out vec2 tc_texture[];
 
-        const float tess_level = 5.0;
+        const float outer = 1.0;
+        const float inner = 3.0;
 
         void main() {
             tc_normal[gl_InvocationID] = v_normal[gl_InvocationID];
             tc_texture[gl_InvocationID] = v_texture[gl_InvocationID];
             gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 
-            gl_TessLevelOuter[0] = tess_level;
-            gl_TessLevelOuter[1] = tess_level;
-            gl_TessLevelOuter[2] = tess_level;
-            gl_TessLevelInner[0] = tess_level;
+            gl_TessLevelOuter[0] = outer;
+            gl_TessLevelOuter[1] = outer;
+            gl_TessLevelOuter[2] = outer;
+            gl_TessLevelInner[0] = inner;
         }
     ";
     // geometry shader
@@ -48,7 +49,7 @@ mod points {
         #version 330
 
         uniform vec2 viewport;
-        const float SIZE = 0.1;
+        const float SIZE = 0.2;
 
         layout(triangles) in;
         layout(triangle_strip, max_vertices=24) out;
