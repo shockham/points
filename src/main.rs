@@ -9,6 +9,7 @@ use caper::input::Key;
 use caper::mesh::gen_sphere;
 use caper::posteffect::PostShaderOptionsBuilder;
 use caper::utils::handle_fp_inputs;
+use caper::utils::load_wavefront;
 
 
 fn main() {
@@ -28,6 +29,26 @@ fn main() {
             .instance_transforms(vec![
                 TransformBuilder::default()
                     .pos((0f32, 0f32, 0f32))
+                    .rot((0f32, 0f32, 0f32, 1f32))
+                    .scale((1f32, 1f32, 1f32))
+                    .build()
+                    .unwrap(),
+            ])
+            .build()
+            .unwrap(),
+    );
+    game.add_render_item(
+        RenderItemBuilder::default()
+            .vertices(load_wavefront(include_bytes!("../assets/test.obj")))
+            .material(
+                MaterialBuilder::default()
+                    .shader_name("points".to_string())
+                    .build()
+                    .unwrap(),
+            )
+            .instance_transforms(vec![
+                TransformBuilder::default()
+                    .pos((10f32, 0f32, 0f32))
                     .rot((0f32, 0f32, 0f32, 1f32))
                     .scale((1f32, 1f32, 1f32))
                     .build()
