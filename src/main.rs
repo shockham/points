@@ -43,6 +43,7 @@ fn main() {
             .material(
                 MaterialBuilder::default()
                     .shader_name("points".to_string())
+                    .texture_name(Some("default".to_string()))
                     .build()
                     .unwrap(),
             )
