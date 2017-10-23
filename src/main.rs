@@ -14,6 +14,7 @@ use caper::utils::load_wavefront;
 
 fn main() {
     let mut game = Game::new();
+    let mut debug_mode = false;
 
     // create a vector of render items
     game.add_render_item(
@@ -97,15 +98,30 @@ fn main() {
     }
 
     loop {
-        // screenshot
-        if game.input.keys_pressed.contains(&Key::P) {
-            game.renderer.save_screenshot();
-        }
         // run the engine update
         game.update(|_: &Ui| {});
 
         // update the first person inputs
-        handle_fp_inputs(&mut game.input, &mut game.cams[0]);
+        if game.input.hide_mouse {
+            handle_fp_inputs(&mut game.input, &mut game.cams[0]);
+        }
+
+        // screenshot
+        if game.input.keys_pressed.contains(&Key::P) {
+            game.renderer.save_screenshot();
+        }
+
+        // editor shortcuts
+        if game.input.keys_down.contains(&Key::LShift) {
+            if game.input.keys_down.contains(&Key::L) {
+                debug_mode = true;
+            }
+            if game.input.keys_down.contains(&Key::K) {
+                debug_mode = false;
+            }
+            game.input.hide_mouse = !game.input.keys_down.contains(&Key::M);
+        }
+        game.renderer.show_editor = debug_mode;
 
         // quit
         if game.input.keys_down.contains(&Key::Escape) {
