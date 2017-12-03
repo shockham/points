@@ -32,7 +32,7 @@ mod points {
 
         uniform vec3 cam_pos;
         const float outer = 1.0;
-        const float inner_range = 200.0;
+        const float inner_range = 100.0;
 
         void main() {
             tc_normal[gl_InvocationID] = v_normal[gl_InvocationID];

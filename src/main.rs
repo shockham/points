@@ -3,7 +3,7 @@ extern crate caper;
 mod shaders;
 
 use caper::types::{RenderItemBuilder, TransformBuilder, MaterialBuilder};
-use caper::game::Game;
+use caper::game::*;
 use caper::imgui::Ui;
 use caper::input::Key;
 use caper::mesh::gen_sphere;
