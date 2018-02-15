@@ -1,7 +1,8 @@
 use caper::shader::{ default, texture };
 use caper::game::Game;
+use caper::types::DefaultTag;
 
-pub fn add_custom_shaders(game: &mut Game) {
+pub fn add_custom_shaders(game: &mut Game<DefaultTag>) {
     let shaders = &mut game.renderer.shaders;
     let display = &game.renderer.display;
 

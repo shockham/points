@@ -2,7 +2,7 @@ extern crate caper;
 
 mod shaders;
 
-use caper::types::{RenderItemBuilder, TransformBuilder, MaterialBuilder};
+use caper::types::{RenderItemBuilder, TransformBuilder, MaterialBuilder, DefaultTag};
 use caper::game::*;
 use caper::imgui::Ui;
 use caper::input::Key;
@@ -13,7 +13,7 @@ use caper::utils::load_wavefront;
 
 
 fn main() {
-    let mut game = Game::new();
+    let mut game = Game::<DefaultTag>::new();
     let mut debug_mode = false;
 
     // create a vector of render items
