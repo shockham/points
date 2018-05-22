@@ -99,32 +99,42 @@ fn main() {
 
     loop {
         // run the engine update
-        game.update(|_: &Ui| {});
+        let status = game.update(
+            |_: &Ui| {},
+            |game: &mut Game<DefaultTag>| -> UpdateStatus {
 
-        // update the first person inputs
-        if game.input.hide_mouse {
-            handle_fp_inputs(&mut game.input, &mut game.cams[0]);
-        }
+                // update the first person inputs
+                if game.input.hide_mouse {
+                    handle_fp_inputs(&mut game.input, &mut game.cams[0]);
+                }
 
-        // screenshot
-        if game.input.keys_pressed.contains(&Key::P) {
-            game.renderer.save_screenshot();
-        }
+                // screenshot
+                if game.input.keys_pressed.contains(&Key::P) {
+                    game.renderer.save_screenshot();
+                }
 
-        // editor shortcuts
-        if game.input.keys_down.contains(&Key::LShift) {
-            if game.input.keys_down.contains(&Key::L) {
-                debug_mode = true;
-            }
-            if game.input.keys_down.contains(&Key::K) {
-                debug_mode = false;
-            }
-            game.input.hide_mouse = !game.input.keys_down.contains(&Key::M);
-        }
-        game.renderer.show_editor = debug_mode;
+                // editor shortcuts
+                if game.input.keys_down.contains(&Key::LShift) {
+                    if game.input.keys_down.contains(&Key::L) {
+                        debug_mode = true;
+                    }
+                    if game.input.keys_down.contains(&Key::K) {
+                        debug_mode = false;
+                    }
+                    game.input.hide_mouse = !game.input.keys_down.contains(&Key::M);
+                }
+                game.renderer.show_editor = debug_mode;
 
-        // quit
-        if game.input.keys_down.contains(&Key::Escape) {
+                // quit
+                if game.input.keys_down.contains(&Key::Escape) {
+                    return UpdateStatus::Finish;
+                }
+
+                UpdateStatus::Continue
+            },
+        );
+
+        if let UpdateStatus::Finish = status {
             break;
         }
     }
