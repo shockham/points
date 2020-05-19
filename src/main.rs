@@ -13,7 +13,7 @@ use caper::utils::load_wavefront;
 
 
 fn main() {
-    let mut game = Game::<DefaultTag>::new();
+    let (mut game, event_loop) = Game::<DefaultTag>::new();
     let mut debug_mode = false;
 
     // create a vector of render items
@@ -97,9 +97,9 @@ fn main() {
             .unwrap();
     }
 
-    loop {
-        // run the engine update
-        let status = game.update(
+    // run the engine update
+    start_loop(event_loop, move |events| {
+        game.update(
             |_: &Ui| {},
             |game: &mut Game<DefaultTag>| -> UpdateStatus {
 
@@ -132,10 +132,7 @@ fn main() {
 
                 UpdateStatus::Continue
             },
-        );
-
-        if let UpdateStatus::Finish = status {
-            break;
-        }
-    }
+            events,
+        )
+    });
 }
